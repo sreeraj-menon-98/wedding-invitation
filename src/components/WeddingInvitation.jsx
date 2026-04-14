@@ -1,7 +1,8 @@
 import RSVPSection from './RSVPSection'
+import EventCard from './EventCard'
 import './WeddingInvitation.css'
 
-function WeddingInvitation({ textVisible, onVenueClick }) {
+function WeddingInvitation({ textVisible, events, guestId, onVenueClick }) {
   return (
     <div className="invitation-card">
       <section className="hero-section">
@@ -30,24 +31,20 @@ function WeddingInvitation({ textVisible, onVenueClick }) {
             </svg>
           </div>
 
-          <div className="hero-details anim-7">
-            <p>10:30 AM</p>
-            <p>Saturday, 9th May, 2026</p>
+          {/* Event cards */}
+          <div className="events-list anim-7">
+            {events.map((event) => (
+              <EventCard
+                key={event.id}
+                event={event}
+                onVenueClick={() => onVenueClick(event)}
+              />
+            ))}
           </div>
 
-          <div className="hero-venue anim-8" onClick={onVenueClick} role="button" tabIndex={0}>
-            <p>Trinita Casa, North, Edappally</p>
-            <span className="hero-venue-hint">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                <circle cx="12" cy="10" r="3" />
-              </svg>
-              Tap for directions
-            </span>
-          </div>
-
-          <div className="hero-rsvp anim-9">
-            <RSVPSection />
+          {/* RSVP */}
+          <div className="hero-rsvp anim-8">
+            <RSVPSection events={events} guestId={guestId} />
           </div>
         </div>
       </section>

@@ -1,0 +1,67 @@
+.event-card {
+  background: rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(218, 165, 32, 0.25);
+  border-radius: 12px;
+  padding: 14px 18px;
+  text-align: center;
+}
+
+.event-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #daa520;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin: 0 0 6px;
+}
+
+.event-datetime {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.85);
+  margin: 0 0 6px;
+}
+
+.event-venue {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  color: rgba(218, 165, 32, 0.8);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  margin: 0;
+  cursor: pointer;
+  transition: color 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.event-venue:hover {
+  color: #daa520;
+}
+
+.event-pin {
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .event-card {
+    padding: 12px 14px;
+  }
+
+  .event-name {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+
+  .event-datetime {
+    font-size: 0.75rem;
+  }
+
+  .event-venue {
+    font-size: 0.6rem;
+  }
+}

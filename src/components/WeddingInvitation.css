@@ -100,47 +100,13 @@
   margin: 10px 0;
 }
 
-.hero-details p {
-  font-family: 'Cinzel', serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.9);
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  line-height: 1.8;
-  margin: 0;
-}
-
-.hero-venue {
-  margin-top: 8px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.hero-venue:hover {
-  transform: scale(1.05);
-}
-
-.hero-venue p {
-  font-family: 'Cinzel', serif;
-  font-weight: 600;
-  font-size: 0.8rem;
-  color: #daa520;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  margin: 0;
-}
-
-.hero-venue-hint {
+.events-list {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.7rem;
-  color: rgba(218, 165, 32, 0.7);
-  font-style: italic;
-  margin-top: 4px;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  max-width: 380px;
+  box-sizing: border-box;
 }
 
 .hero-rsvp {

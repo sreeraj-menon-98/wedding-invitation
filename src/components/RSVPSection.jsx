@@ -4,13 +4,20 @@ import './RSVPSection.css'
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 const GOOGLE_SHEET_WEBAPP_URL = import.meta.env.VITE_GOOGLE_SHEET_WEBAPP_URL || ''
 
-function RSVPSection() {
+function RSVPSection({ events, guestId }) {
   const [user, setUser] = useState(null)
-  const [attending, setAttending] = useState(null)
-  const [guestCount, setGuestCount] = useState(1)
+  const [selectedEvents, setSelectedEvents] = useState({})
+  const [declining, setDeclining] = useState(false)
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+
+  // Initialize all events as checked
+  useEffect(() => {
+    const initial = {}
+    events.forEach((e) => { initial[e.id] = true })
+    setSelectedEvents(initial)
+  }, [events])
 
   const handleCredentialResponse = useCallback((response) => {
     const payload = parseJwt(response.credential)
@@ -63,9 +70,18 @@ function RSVPSection() {
     return JSON.parse(jsonPayload)
   }
 
+  function toggleEvent(eventId) {
+    setSelectedEvents((prev) => ({ ...prev, [eventId]: !prev[eventId] }))
+  }
+
   async function handleSubmit() {
-    if (attending === null) {
-      setError('Please select whether you are attending')
+    const attending = !declining
+    const confirmedEvents = attending
+      ? events.filter((e) => selectedEvents[e.id]).map((e) => e.name)
+      : []
+
+    if (attending && confirmedEvents.length === 0) {
+      setError('Please select at least one event, or decline')
       return
     }
 
@@ -75,8 +91,11 @@ function RSVPSection() {
     const data = {
       name: user.name,
       email: user.email,
+      guestGroup: guestId || 'direct',
       attending: attending ? 'Yes' : 'No',
-      guestCount: attending ? guestCount : 0,
+      sangeet: confirmedEvents.includes('Sangeet') ? 'Yes' : 'No',
+      wedding: confirmedEvents.includes('Wedding') ? 'Yes' : 'No',
+      reception: confirmedEvents.includes('Reception') ? 'Yes' : 'No',
       timestamp: new Date().toISOString(),
     }
 
@@ -98,9 +117,12 @@ function RSVPSection() {
 
   function handleSignOut() {
     setUser(null)
-    setAttending(null)
+    setDeclining(false)
     setSubmitted(false)
     setError('')
+    const initial = {}
+    events.forEach((e) => { initial[e.id] = true })
+    setSelectedEvents(initial)
   }
 
   if (!GOOGLE_CLIENT_ID) {
@@ -113,6 +135,8 @@ function RSVPSection() {
       </div>
     )
   }
+
+  const confirmedCount = events.filter((e) => selectedEvents[e.id]).length
 
   return (
     <div className="rsvp-section">
@@ -130,8 +154,8 @@ function RSVPSection() {
             <div className="check-icon">&#10003;</div>
             <h3>Thank you, {user.name.split(' ')[0]}!</h3>
             <p>
-              {attending
-                ? `We're excited to see you there with ${guestCount} guest${guestCount > 1 ? 's' : ''}!`
+              {!declining
+                ? `We're excited to see you at ${confirmedCount} event${confirmedCount > 1 ? 's' : ''}!`
                 : "We'll miss you! Thank you for letting us know."}
             </p>
           </div>
@@ -153,40 +177,30 @@ function RSVPSection() {
               </button>
             </div>
 
-            <div className="attendance-toggle">
-              <button
-                className={`toggle-btn ${attending === true ? 'active-yes' : ''}`}
-                onClick={() => setAttending(true)}
-              >
-                Joyfully Accept
-              </button>
-              <button
-                className={`toggle-btn ${attending === false ? 'active-no' : ''}`}
-                onClick={() => setAttending(false)}
-              >
-                Regretfully Decline
-              </button>
-            </div>
-
-            {attending && (
-              <div className="guest-count">
-                <label className="guest-label">Number of Guests</label>
-                <div className="counter-controls">
-                  <button
-                    className="counter-btn"
-                    onClick={() => setGuestCount(Math.max(1, guestCount - 1))}
-                  >
-                    -
-                  </button>
-                  <span className="counter-value">{guestCount}</span>
-                  <button
-                    className="counter-btn"
-                    onClick={() => setGuestCount(Math.min(10, guestCount + 1))}
-                  >
-                    +
-                  </button>
+            {!declining ? (
+              <>
+                <p className="event-select-label">Select events you'll attend</p>
+                <div className="event-checkboxes">
+                  {events.map((event) => (
+                    <label key={event.id} className="event-checkbox">
+                      <input
+                        type="checkbox"
+                        checked={selectedEvents[event.id] || false}
+                        onChange={() => toggleEvent(event.id)}
+                      />
+                      <span className="checkbox-custom"></span>
+                      <span className="checkbox-text">
+                        <span className="checkbox-event-name">{event.name}</span>
+                        <span className="checkbox-event-date">{event.date}</span>
+                      </span>
+                    </label>
+                  ))}
                 </div>
-              </div>
+              </>
+            ) : (
+              <p className="decline-message">
+                We understand. Thank you for letting us know.
+              </p>
             )}
 
             {error && <p className="error-msg">{error}</p>}
@@ -196,7 +210,14 @@ function RSVPSection() {
               onClick={handleSubmit}
               disabled={loading}
             >
-              {loading ? 'Submitting...' : 'Send RSVP'}
+              {loading ? 'Submitting...' : declining ? 'Send Regrets' : 'Confirm Attendance'}
+            </button>
+
+            <button
+              className="decline-toggle"
+              onClick={() => setDeclining(!declining)}
+            >
+              {declining ? 'Actually, I can make it!' : 'Regretfully Decline'}
             </button>
           </div>
         )}

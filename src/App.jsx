@@ -1,11 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import WeddingInvitation from './components/WeddingInvitation'
 import VenueModal from './components/VenueModal'
+import { getGuestEvents } from './events'
 import './App.css'
 
 function App() {
   const [textVisible, setTextVisible] = useState(false)
-  const [showVenueModal, setShowVenueModal] = useState(false)
+  const [venueEvent, setVenueEvent] = useState(null)
+
+  const guestId = useMemo(() => {
+    const params = new URLSearchParams(window.location.search)
+    return params.get('rsvp')
+  }, [])
+
+  const events = useMemo(() => getGuestEvents(guestId), [guestId])
 
   useEffect(() => {
     const timer = setTimeout(() => setTextVisible(true), 1500)
@@ -16,10 +24,12 @@ function App() {
     <div className="app">
       <WeddingInvitation
         textVisible={textVisible}
-        onVenueClick={() => setShowVenueModal(true)}
+        events={events}
+        guestId={guestId}
+        onVenueClick={(event) => setVenueEvent(event)}
       />
-      {showVenueModal && (
-        <VenueModal onClose={() => setShowVenueModal(false)} />
+      {venueEvent && (
+        <VenueModal event={venueEvent} onClose={() => setVenueEvent(null)} />
       )}
     </div>
   )

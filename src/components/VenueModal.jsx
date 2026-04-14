@@ -1,9 +1,7 @@
 import { QRCodeSVG } from 'qrcode.react'
 import './VenueModal.css'
 
-const VENUE_URL = 'https://maps.app.goo.gl/2D6dErMhmVpyqdEq9'
-
-function VenueModal({ onClose }) {
+function VenueModal({ event, onClose }) {
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-content" onClick={(e) => e.stopPropagation()}>
@@ -11,13 +9,13 @@ function VenueModal({ onClose }) {
           &times;
         </button>
 
-        <h2 className="modal-title">Trinita Casa</h2>
-        <p className="modal-subtitle">North, Edappally</p>
+        <h2 className="modal-title">{event.venue}</h2>
+        <p className="modal-subtitle">{event.name} &middot; {event.date}</p>
 
         <div className="qr-container">
           <QRCodeSVG
-            value={VENUE_URL}
-            size={200}
+            value={event.mapUrl}
+            size={180}
             bgColor="#f5efe0"
             fgColor="#5c4a2a"
             level="M"
@@ -27,16 +25,16 @@ function VenueModal({ onClose }) {
         <p className="modal-instruction">Scan QR code for directions</p>
 
         <a
-          href={VENUE_URL}
+          href={event.mapUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="venue-link"
         >
-          {VENUE_URL}
+          {event.mapUrl}
         </a>
 
         <a
-          href={VENUE_URL}
+          href={event.mapUrl}
           target="_blank"
           rel="noopener noreferrer"
           className="directions-btn"
