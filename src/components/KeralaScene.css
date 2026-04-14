@@ -1,0 +1,33 @@
+.kerala-scene {
+  width: 100%;
+  overflow: hidden;
+}
+
+.kerala-svg {
+  width: 100%;
+  height: 160px;
+  display: block;
+}
+
+.elephant-1 {
+  animation: elephantWalk 4s ease-in-out infinite;
+}
+
+.elephant-2 {
+  animation: elephantWalk 5s ease-in-out infinite reverse;
+}
+
+@keyframes elephantWalk {
+  0%, 100% {
+    transform: translate(100px, 100px) translateX(0);
+  }
+  50% {
+    transform: translate(100px, 100px) translateX(3px) translateY(-1px);
+  }
+}
+
+@media (max-width: 480px) {
+  .kerala-svg {
+    height: 120px;
+  }
+}

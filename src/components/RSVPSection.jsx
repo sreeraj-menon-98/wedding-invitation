@@ -81,11 +81,12 @@ function RSVPSection() {
     }
 
     try {
+      const formData = new URLSearchParams()
+      formData.append('data', JSON.stringify(data))
       await fetch(GOOGLE_SHEET_WEBAPP_URL, {
         method: 'POST',
         mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
+        body: formData,
       })
       setSubmitted(true)
     } catch {

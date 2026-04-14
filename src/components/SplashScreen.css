@@ -1,0 +1,105 @@
+.splash-screen {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  transition: height 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.splash-screen.splash-done {
+  height: 55vh;
+}
+
+.splash-photo-wrapper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.splash-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  display: block;
+}
+
+.splash-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.1) 0%,
+    rgba(0, 0, 0, 0.0) 40%,
+    rgba(0, 0, 0, 0.5) 80%,
+    rgba(0, 0, 0, 0.75) 100%
+  );
+  transition: opacity 1s ease;
+}
+
+.splash-done .splash-overlay {
+  opacity: 0.6;
+}
+
+.splash-text {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: center;
+  padding: 40px 20px;
+  animation: fadeInUp 1.2s ease 0.5s both;
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.splash-done .splash-text {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.splash-save-date {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  color: #daa520;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.splash-names {
+  font-family: 'Great Vibes', cursive;
+  font-size: 3.2rem;
+  color: #fff;
+  margin: 0 0 10px;
+  font-weight: 400;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+}
+
+.splash-date {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 480px) {
+  .splash-names {
+    font-size: 2.4rem;
+  }
+
+  .splash-screen.splash-done {
+    height: 45vh;
+  }
+}

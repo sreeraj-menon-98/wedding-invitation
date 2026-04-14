@@ -1,0 +1,45 @@
+.coconut-border {
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+.coconut-left {
+  left: -5px;
+}
+
+.coconut-right {
+  right: -5px;
+}
+
+.coconut-tree-svg {
+  width: 60px;
+  height: auto;
+  animation: treeSway 6s ease-in-out infinite;
+  transform-origin: bottom center;
+}
+
+.coconut-right .coconut-tree-svg {
+  animation: treeSwayReverse 6s ease-in-out infinite;
+}
+
+@keyframes treeSway {
+  0%, 100% { transform: rotate(0deg) scaleX(1); }
+  50% { transform: rotate(1deg) scaleX(1); }
+}
+
+@keyframes treeSwayReverse {
+  0%, 100% { transform: rotate(0deg) scaleX(-1); }
+  50% { transform: rotate(-1deg) scaleX(-1); }
+}
+
+@media (max-width: 480px) {
+  .coconut-tree-svg {
+    width: 40px;
+  }
+  .coconut-border {
+    opacity: 0.4;
+  }
+}

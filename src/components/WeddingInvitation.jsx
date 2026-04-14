@@ -1,75 +1,56 @@
-import CoupleIllustration from './CoupleIllustration'
-import LotusDecoration from './LotusDecoration'
+import RSVPSection from './RSVPSection'
 import './WeddingInvitation.css'
 
-function WeddingInvitation({ onVenueClick }) {
+function WeddingInvitation({ textVisible, onVenueClick }) {
   return (
     <div className="invitation-card">
-      {/* Background texture overlay */}
-      <div className="texture-overlay"></div>
+      <section className="hero-section">
+        <img
+          src="/couple-photo.png"
+          alt="Neeraja & Sreeraj"
+          className="hero-photo"
+        />
+        <div className="hero-overlay"></div>
 
-      {/* Gold border frame */}
-      <div className="gold-frame">
-        {/* Scalloped arch at top */}
-        <div className="scalloped-arch">
-          <svg viewBox="0 0 400 120" preserveAspectRatio="none" className="arch-svg">
-            <defs>
-              <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#c9a84c" />
-                <stop offset="50%" stopColor="#daa520" />
-                <stop offset="100%" stopColor="#b8860b" />
-              </linearGradient>
-            </defs>
-            {/* Scallop arcs */}
-            <path
-              d="M0,120 L0,80 Q0,40 40,40 Q80,40 80,0 Q80,40 120,40 Q160,40 160,0 Q160,40 200,40 Q240,40 240,0 Q240,40 280,40 Q320,40 320,0 Q320,40 360,40 Q400,40 400,80 L400,120 Z"
-              fill="none"
-              stroke="url(#goldGrad)"
-              strokeWidth="3"
-            />
-          </svg>
-        </div>
+        <div className={`hero-text ${textVisible ? 'show' : ''}`}>
+          <p className="hero-invite-line anim-1">You're Cordially Invited</p>
+          <p className="hero-invite-line anim-2">To The Wedding Of</p>
 
-        {/* Content area */}
-        <div className="invitation-content">
-          <CoupleIllustration />
+          <h1 className="hero-bride-name anim-3">Neeraja</h1>
+          <div className="hero-ampersand anim-4">&</div>
+          <h1 className="hero-groom-name anim-5">Sreeraj</h1>
 
-          <h2 className="invite-text">
-            You're Cordially Invited<br />To The Wedding Of
-          </h2>
+          <div className="hero-divider anim-6">
+            <svg viewBox="0 0 200 20" width="180" height="16">
+              <line x1="0" y1="10" x2="80" y2="10" stroke="rgba(218,165,32,0.6)" strokeWidth="0.8" />
+              <circle cx="90" cy="10" r="3" fill="none" stroke="rgba(218,165,32,0.6)" strokeWidth="0.8" />
+              <circle cx="100" cy="10" r="2" fill="rgba(218,165,32,0.7)" />
+              <circle cx="110" cy="10" r="3" fill="none" stroke="rgba(218,165,32,0.6)" strokeWidth="0.8" />
+              <line x1="120" y1="10" x2="200" y2="10" stroke="rgba(218,165,32,0.6)" strokeWidth="0.8" />
+            </svg>
+          </div>
 
-          <h1 className="bride-name">Neeraja</h1>
+          <div className="hero-details anim-7">
+            <p>10:30 AM</p>
+            <p>Saturday, 9th May, 2026</p>
+          </div>
 
-          <div className="ampersand">&</div>
+          <div className="hero-venue anim-8" onClick={onVenueClick} role="button" tabIndex={0}>
+            <p>Trinita Casa, North, Edappally</p>
+            <span className="hero-venue-hint">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              Tap for directions
+            </span>
+          </div>
 
-          <h1 className="groom-name">Sreeraj</h1>
-
-          <div className="details-row">
-            <div className="date-info">
-              <p className="detail-text">10:30 AM</p>
-              <p className="detail-text">Saturday,</p>
-              <p className="detail-text">9th May, 2026</p>
-            </div>
-
-            <div className="venue-info" onClick={onVenueClick}>
-              <p className="detail-text">Trinita Casa,</p>
-              <p className="detail-text">North,</p>
-              <p className="detail-text">
-                Edappally
-                <span className="location-pin">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </span>
-              </p>
-            </div>
+          <div className="hero-rsvp anim-9">
+            <RSVPSection />
           </div>
         </div>
-
-        {/* Lotus decoration at bottom */}
-        <LotusDecoration />
-      </div>
+      </section>
     </div>
   )
 }

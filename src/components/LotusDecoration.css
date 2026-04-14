@@ -6,6 +6,31 @@
 
 .lotus-svg {
   width: 100%;
-  height: 120px;
+  height: 140px;
   display: block;
+}
+
+.lotus-flower {
+  animation: lotusGentleSway 4s ease-in-out infinite;
+  transform-origin: center bottom;
+}
+
+.lotus-flower-small {
+  animation: lotusGentleSway 5s ease-in-out infinite reverse;
+  transform-origin: center bottom;
+}
+
+@keyframes lotusGentleSway {
+  0%, 100% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+@media (max-width: 480px) {
+  .lotus-svg {
+    height: 110px;
+  }
 }
