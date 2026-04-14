@@ -1,8 +1,47 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import confetti from 'canvas-confetti'
 import './RSVPSection.css'
 
 const GOOGLE_CLIENT_ID = import.meta.env.VITE_GOOGLE_CLIENT_ID || ''
 const GOOGLE_SHEET_WEBAPP_URL = import.meta.env.VITE_GOOGLE_SHEET_WEBAPP_URL || ''
+
+function fireConfetti() {
+  const duration = 3000
+  const end = Date.now() + duration
+
+  const colors = ['#daa520', '#f0d060', '#fff', '#c9a84c', '#ff6b6b', '#4ecdc4']
+
+  function frame() {
+    confetti({
+      particleCount: 3,
+      angle: 60,
+      spread: 55,
+      origin: { x: 0, y: 0.7 },
+      colors,
+    })
+    confetti({
+      particleCount: 3,
+      angle: 120,
+      spread: 55,
+      origin: { x: 1, y: 0.7 },
+      colors,
+    })
+
+    if (Date.now() < end) {
+      requestAnimationFrame(frame)
+    }
+  }
+
+  // Big initial burst
+  confetti({
+    particleCount: 100,
+    spread: 100,
+    origin: { y: 0.6 },
+    colors,
+  })
+
+  frame()
+}
 
 function RSVPSection({ events, guestId }) {
   const [user, setUser] = useState(null)
@@ -11,8 +50,8 @@ function RSVPSection({ events, guestId }) {
   const [submitted, setSubmitted] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const audioRef = useRef(null)
 
-  // Initialize all events as checked
   useEffect(() => {
     const initial = {}
     events.forEach((e) => { initial[e.id] = true })
@@ -58,6 +97,16 @@ function RSVPSection({ events, guestId }) {
     }
   }, [handleCredentialResponse])
 
+  // Cleanup audio on unmount
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause()
+        audioRef.current = null
+      }
+    }
+  }, [])
+
   function parseJwt(token) {
     const base64Url = token.split('.')[1]
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
@@ -68,6 +117,16 @@ function RSVPSection({ events, guestId }) {
         .join('')
     )
     return JSON.parse(jsonPayload)
+  }
+
+  function playAudio(src) {
+    if (audioRef.current) {
+      audioRef.current.pause()
+    }
+    const audio = new Audio(src)
+    audio.volume = 0.5
+    audioRef.current = audio
+    audio.play().catch(() => {})
   }
 
   function toggleEvent(eventId) {
@@ -108,6 +167,13 @@ function RSVPSection({ events, guestId }) {
         body: formData,
       })
       setSubmitted(true)
+
+      if (attending) {
+        fireConfetti()
+        playAudio('/confirm-bgm.mp3')
+      } else {
+        playAudio('/decline-bgm.mp3')
+      }
     } catch {
       setError('Failed to submit. Please try again.')
     } finally {
@@ -116,6 +182,10 @@ function RSVPSection({ events, guestId }) {
   }
 
   function handleSignOut() {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current = null
+    }
     setUser(null)
     setDeclining(false)
     setSubmitted(false)
@@ -151,13 +221,21 @@ function RSVPSection({ events, guestId }) {
           </div>
         ) : submitted ? (
           <div className="submitted-message">
-            <div className="check-icon">&#10003;</div>
-            <h3>Thank you, {user.name.split(' ')[0]}!</h3>
-            <p>
-              {!declining
-                ? `We're excited to see you at ${confirmedCount} event${confirmedCount > 1 ? 's' : ''}!`
-                : "We'll miss you! Thank you for letting us know."}
-            </p>
+            {!declining ? (
+              <>
+                <div className="check-icon">&#10003;</div>
+                <h3>Thank you, {user.name.split(' ')[0]}!</h3>
+                <p>
+                  We're excited to see you at {confirmedCount} event{confirmedCount > 1 ? 's' : ''}!
+                </p>
+              </>
+            ) : (
+              <>
+                <img src="/sad-duck.png" alt="Sad duck" className="sad-duck" />
+                <h3>We'll miss you, {user.name.split(' ')[0]}!</h3>
+                <p>Thank you for letting us know.</p>
+              </>
+            )}
           </div>
         ) : (
           <div className="rsvp-form">
