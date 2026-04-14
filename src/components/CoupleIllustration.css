@@ -1,0 +1,108 @@
+.couple-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.couple-walk-animation {
+  display: flex;
+  align-items: flex-end;
+  position: relative;
+  animation: walkBounce 0.8s ease-in-out infinite;
+}
+
+@keyframes walkBounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
+}
+
+.bride {
+  position: relative;
+  z-index: 2;
+  animation: brideWalk 0.8s ease-in-out infinite;
+}
+
+.groom {
+  position: relative;
+  z-index: 2;
+  margin-left: -25px;
+  animation: groomWalk 0.8s ease-in-out infinite;
+}
+
+@keyframes brideWalk {
+  0%, 100% {
+    transform: rotate(-0.5deg);
+  }
+  50% {
+    transform: rotate(0.5deg);
+  }
+}
+
+@keyframes groomWalk {
+  0%, 100% {
+    transform: rotate(0.5deg);
+  }
+  50% {
+    transform: rotate(-0.5deg);
+  }
+}
+
+.holding-hands {
+  position: absolute;
+  bottom: 105px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+}
+
+.bride-left-leg {
+  animation: legSwingLeft 0.8s ease-in-out infinite;
+  transform-origin: center top;
+}
+
+.bride-right-leg {
+  animation: legSwingRight 0.8s ease-in-out infinite;
+  transform-origin: center top;
+}
+
+@keyframes legSwingLeft {
+  0%, 100% {
+    transform: translateX(-2px);
+  }
+  50% {
+    transform: translateX(2px);
+  }
+}
+
+@keyframes legSwingRight {
+  0%, 100% {
+    transform: translateX(2px);
+  }
+  50% {
+    transform: translateX(-2px);
+  }
+}
+
+.couple-shadow {
+  width: 180px;
+  height: 12px;
+  background: radial-gradient(ellipse, rgba(0,0,0,0.15) 0%, transparent 70%);
+  margin-top: -5px;
+  animation: shadowPulse 0.8s ease-in-out infinite;
+}
+
+@keyframes shadowPulse {
+  0%, 100% {
+    transform: scaleX(1);
+    opacity: 0.8;
+  }
+  50% {
+    transform: scaleX(0.9);
+    opacity: 0.5;
+  }
+}
