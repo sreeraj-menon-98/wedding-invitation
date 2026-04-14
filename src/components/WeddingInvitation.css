@@ -146,7 +146,8 @@
 .hero-rsvp {
   margin-top: 30px;
   width: 100%;
-  max-width: 420px;
+  max-width: 380px;
+  box-sizing: border-box;
 }
 
 /* Responsive */
