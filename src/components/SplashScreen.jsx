@@ -5,7 +5,7 @@ function SplashScreen({ done }) {
     <div className={`splash-screen ${done ? 'splash-done' : ''}`}>
       <div className="splash-photo-wrapper">
         <img
-          src="/couple-photo.png"
+          src="/couple-photo.jpeg"
           alt="Neeraja & Sreeraj"
           className="splash-photo"
         />

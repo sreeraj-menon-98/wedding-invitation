@@ -7,7 +7,7 @@ function WeddingInvitation({ textVisible, events, guestId, onVenueClick }) {
     <div className="invitation-card">
       <section className="hero-section">
         <img
-          src="/couple-photo.png"
+          src="/couple-photo.jpeg"
           alt="Neeraja & Sreeraj"
           className="hero-photo"
         />
